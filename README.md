@@ -1,4 +1,4 @@
-# Strapi-Astro Blog
+# Strapi Astro Blog
 
 <div align="center">
     <img src="docs/preview.gif">
