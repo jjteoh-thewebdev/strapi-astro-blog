@@ -1,0 +1,38 @@
+---
+import config from "@/config/config.json";
+import { url } from "../../utils/url-utils";
+import Social from "@/components/Social.astro";
+import social from "@/config/social.json";
+
+let year = new Date().getFullYear();
+let { author } = config.site;
+---
+
+<footer class="section bg-theme-dark">
+  <div class="container">
+    <div class="text-center">
+      <div>
+        Design & Develop by {author}
+        <!--social icons -->
+        <Social source={social} className="social-icons my-4" />
+      </div>
+      <small>
+        © {year} All Rights Reserved. | <a
+          class="link text-[var(--primary)] font-medium"
+          target="_blank"
+          href={url("rss.xml")}>RSS</a
+        >
+      </small>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let backToTop = document.getElementById("backToTop");
+  backToTop?.addEventListener("click", function () {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+</script>

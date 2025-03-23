@@ -1,0 +1,90 @@
+.b-post-content {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  blockquote {
+    margin-bottom: 10px;
+    margin-top: 2rem;
+  }
+
+  a {
+    text-decoration: underline;
+    color: blue;
+  }
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  ol {
+    list-style-type: decimal;
+    margin: 16px 0;
+    padding-left: 40px;
+
+    li {
+      margin-bottom: 4px;
+
+      ol {
+        list-style-type: lower-alpha;
+      }
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+    margin: 16px 0;
+    padding-left: 40px;
+
+    li {
+      margin-bottom: 4px;
+    }
+  }
+
+  code {
+    padding: 2px;
+    background-color: #f5f5f5; /* Light gray background for inline code */
+    color: #e83e8c; /* Text color for inline code */
+    border-radius: 4px; /* Rounded corners */
+    font-family: "Courier New", Courier, monospace; /* Monospace font */
+  }
+
+  /* Container for code blocks */
+  pre {
+    background-color: #282c34; /* Dark background */
+    color: #abb2bf; /* Light text color */
+    padding: 20px 14px; /* Padding around the code */
+    border-radius: 8px; /* Rounded corners */
+    overflow-x: auto; /* Horizontal scroll for long code lines */
+    font-family: "Courier New", Courier, monospace; /* Monospace font */
+    margin: 12px 0;
+
+    /* Inline code */
+    code {
+      padding: 0;
+      background-color: inherit;
+      color: #fff; //#e83e8c; /* Text color for inline code */
+      border-radius: 4px; /* Rounded corners */
+      font-family: "Courier New", Courier, monospace; /* Monospace font */
+
+      /* Syntax highlighting (example with some common colors) */
+      .keyword {
+        color: #c678dd; /* Purple for keywords */
+      }
+
+      .string {
+        color: #98c379; /* Green for strings */
+      }
+
+      .comment {
+        color: #5c6370; /* Gray for comments */
+      }
+
+      .function {
+        color: #61afef; /* Blue for functions */
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "site": {
+    "title": "JJTEOH DEV | WELCOME TO MY BLOG",
+    "base_url": "https://jjteoh.dev",
+    "base_path": "/",
+    "trailing_slash": false,
+    "favicon": "/images/favicon.png",
+    "logo": "",
+    "logo_width": "200",
+    "logo_height": "34",
+    "logo_text": "JJTeoh",
+    "author": "JJ Teoh"
+  },
+
+  "settings": {
+    "pagination": 5,
+    "summary_length": 100,
+    "title_preview_length": 60
+  },
+
+  "metadata": {
+    "meta_author": "JJTeoh",
+    "meta_image": "/images/og-image.png",
+    "meta_description": "JJTEOH Blog"
+  },
+
+  "lang": "en",
+
+  "params": {},
+
+  "contactinfo": {
+    "address": "Penang, Malaysia",
+    "email": "thewebdev.jjteoh@gmail.com",
+    "phone": "+60 14 349 5982"
+  }
+}

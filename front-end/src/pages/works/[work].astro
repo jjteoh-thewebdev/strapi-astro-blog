@@ -1,0 +1,14 @@
+---
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  // TODO fetch from server
+  return [];
+}
+
+const { work } = Astro.params;
+---
+
+<Base>
+  <p>{work}</p>
+</Base>

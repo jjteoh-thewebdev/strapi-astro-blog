@@ -1,0 +1,120 @@
+---
+import config from "@/config/config.json";
+import theme from "@/config/theme.json";
+import Footer from "@/partials/Footer.astro";
+import Header from "@/partials/Header.astro";
+import "@/styles/main.scss";
+import { AstroFont } from "astro-font";
+import { ViewTransitions } from "astro:transitions";
+
+// font families
+const primaryFF = theme.fonts.font_family.primary;
+const secondaryFF = theme.fonts.font_family.secondary;
+const logoFF = theme.fonts.font_family.logo;
+
+let fontPrimary, fontSecondary;
+if (theme.fonts.font_family.primary) {
+  fontPrimary = theme.fonts.font_family.primary
+    .replace(/\+/g, " ")
+    .replace(/:[ital,]*[ital@]*[wght@]*[0-9,;]+/gi, "");
+}
+if (theme.fonts.font_family.secondary) {
+  fontSecondary = theme.fonts.font_family.secondary
+    .replace(/\+/g, " ")
+    .replace(/:[ital,]*[ital@]*[wght@]*[0-9,;]+/gi, "");
+}
+
+// types for frontmatters
+export interface Props {
+  title?: string;
+  meta_title?: string;
+  description?: string;
+  image?: string;
+  noindex?: boolean;
+  canonical?: string;
+  page_url?: string
+  author?: string
+  published_at?: Date
+}
+
+// distructure frontmatters
+const { title, description, image, page_url, author, published_at } =
+  Astro.props;
+
+const siteLang = config.lang.replace("_", "-");
+const { meta_author } = config.metadata;
+
+const siteConfig = config.site
+---
+
+<html
+  lang={siteLang}
+  class="bg-[var(--page-bg)] transition text-[14px] md:text-[16px]"
+>
+  <head>
+    <ViewTransitions />
+
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <!-- <meta name="description" content={description || title} /> -->
+    <meta name="author" content={author || meta_author} />
+    
+		<meta name="title" property="og:title" content={title || siteConfig.title}>
+    <meta property="og:type" content="article" />
+    <meta name="image" property="og:image" content={image} />
+		<meta name="description" property="og:description" content={description}>
+    <!-- <meta name="publish_date" property="og:publish_date" content={pDate}> -->
+    <meta property="og:url" content={page_url ? `https://jjteoh.dev${page_url}` : Astro.url} />
+    <meta property="og:site_name" content={siteConfig.title}>
+
+		<meta name="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content={Astro.url}>
+		<meta name="twitter:title" content={title || siteConfig.title}>
+		<meta name="twitter:description" content={description}>
+
+    <!-- TODO google font -->
+    <!-- google font css -->
+    <AstroFont
+      config={[
+        {
+          src: [],
+          preload: false,
+          display: "swap",
+          name: fontPrimary!,
+          fallback: "sans-serif",
+          cssVariable: "font-primary",
+          googleFontsURL: `https://fonts.googleapis.com/css2?family=${primaryFF}&display=swap`,
+        },
+        {
+          src: [],
+          preload: false,
+          display: "swap",
+          name: fontSecondary!,
+          fallback: "sans-serif",
+          cssVariable: "font-secondary",
+          googleFontsURL: `https://fonts.googleapis.com/css2?family=${secondaryFF}&display=swap`,
+        },
+        {
+          src: [],
+          preload: false,
+          display: "swap",
+          name: "Logo",
+          fallback: "sans-serif",
+          cssVariable: "font-logo",
+          googleFontsURL: `https://fonts.googleapis.com/css2?family=${logoFF}&display=swap`,
+        },
+      ]}
+    />
+
+    <title>{title}</title>
+  </head>
+  <body>
+    <Header />
+    <main id="main-content" class="min-h-[60vh]">
+      <slot>Something went wrong...</slot>
+    </main>
+    <Footer />
+  </body>
+</html>

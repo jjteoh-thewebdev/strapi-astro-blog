@@ -1,0 +1,22 @@
+---
+/**
+ * blog page with infinite scroll(pagination) feature
+ */
+// export const prerender = false // indicate server side render
+
+import Blog from "@/layouts/Blog";
+import Base from "../../layouts/Base.astro";
+
+const backendBaseUrl = import.meta.env.STRAPI_URL;
+const backendToken = import.meta.env.STRAPI_API_TOKEN;
+---
+
+<Base title="JJ TEOH | blog">
+  <div class="items-center justify-center flex flex-col">
+    <Blog
+      client:load
+      backendBaseUrl={backendBaseUrl}
+      backendToken={backendToken}
+    />
+  </div>
+</Base>

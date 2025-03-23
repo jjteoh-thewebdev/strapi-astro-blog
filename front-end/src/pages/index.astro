@@ -1,0 +1,281 @@
+---
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import PostList from "@/components/PostList.astro";
+import fetchApi, { type StrapiMeta } from "@/lib/strapi/strapi";
+import type Post from "@/interfaces/post";
+
+// fetch Latest Posts
+const backendBaseUrl = import.meta.env.STRAPI_URL;
+const backendToken = import.meta.env.STRAPI_API_TOKEN;
+const pageSize = 3;
+
+const fecthLatestPosts = async () => {
+  try {
+    const fields = `fields[0]=title&fields[1]=excerpt&populate[banner]=*&fields[3]=category&fields[4]=tags&fields[5]=publishedAt&fields[6]=slug`;
+    const pagination = `pagination[page]=${1}&pagination[pageSize]=${pageSize}`;
+    const sort = `sort[0]=publishedAt:desc`;
+
+    const q = `posts?${fields}&${pagination}&${sort}`;
+
+    const response = await fetchApi<{
+      data: Post[];
+      meta: StrapiMeta;
+    }>({
+      baseUrl: backendBaseUrl,
+      authToken: backendToken,
+      endpoint: q,
+    });
+
+    if (response && response.data && response.meta) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Error fetching more similar posts:", error);
+  }
+
+  // default empty
+  return [];
+};
+
+const latestPosts = (await fecthLatestPosts())?.map((p) => ({
+  id: p.id,
+  slug: p.attributes.slug,
+  image: {
+    url: p.attributes.banner.data.attributes.url,
+    alt: p.attributes.banner.data.attributes.alternativeText,
+  },
+  title: p.attributes.title,
+  excerpt: p.attributes.excerpt,
+  category: p.attributes.category,
+}));
+---
+
+<Base title="JJ TEOH | Software Dev">
+  <!-- Featured -->
+  <div class="grid lg:grid-cols-2">
+    <!-- left/top -->
+    <div
+      class="row-start-2 lg:row-start-1
+			flex flex-col items-center
+			lg:justify-center lg:h-[100vh]
+			py-20 lg:py-10 relative"
+      style="transform: translateX(0vw) translateZ(0px);"
+    >
+      <h1 class="font-title m-0 p-0 w-full text-center text-8xl">
+        <div class="mb-5 text-5xl">Hello, I'm a</div>
+        <div
+          class="relative top-0 w-full overflow-hidden my-0"
+          style="height: 80px;"
+        >
+          <div
+            class="animated-text-container absolute overflow-hidden top-0 left-0 right-0"
+            style="height: 80px; "
+          >
+            <!--transform: translateY(-398.305px) translateZ(0px); -->
+            <div
+              class="animated-text relative flex items-start overflow-hidden justify-center align-center text-5xl"
+              style="height: 100px;"
+            >
+              Software Developer
+            </div>
+            <div
+              class="animated-text relative flex items-start overflow-hidden justify-center align-center text-5xl"
+              style="height: 100px;"
+            >
+              Product Engineer
+            </div>
+            <div
+              class="animated-text relative flex items-start overflow-hidden justify-center align-center text-5xl"
+              style="height: 100px;"
+            >
+              Project Engineer
+            </div>
+            <div
+              class="animated-text relative flex items-start overflow-hidden justify-center align-center text-5xl"
+              style="height: 100px;"
+            >
+              Problem Solver
+            </div>
+            <div
+              class="animated-text relative flex items-start overflow-hidden justify-center align-center text-5xl"
+              style="height: 100px;"
+            >
+              Team Player
+            </div>
+            <div
+              class="animated-text relative flex items-start overflow-hidden justify-center align-center text-5xl"
+              style="height: 100px;"
+            >
+              Content Creator
+            </div>
+            <div
+              class="animated-text relative flex items-start overflow-hidden justify-center align-center text-5xl"
+              style="height: 100px;"
+            >
+              Marathon Runner
+            </div>
+          </div>
+        </div>
+      </h1>
+      <div class="mt-5">
+        <p class="text-center">
+          based in <a
+            href="https://maps.app.goo.gl/A6LzoJia2oMn4a5R8"
+            target="_blank">Malaysia</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <!-- right/bottom -->
+    <div class="relative" style="transform: translateX(0vw) translateZ(0px);">
+      <div
+        class="relative overflow-hidden h-lvh bg-green-400"
+        style="background-image: url('/images/desert-2.jpg');"
+      >
+        <div class="w-full h-full">
+          <Image
+            src="/images/penang.jpg"
+            alt="https://unsplash.com/@_seb"
+            class="w-full h-full object-cover contrast-[1.1]"
+            width="100"
+            height="100"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Featured -->
+
+  <!-- Impressum -->
+  <div class="mt-4 my-10 lg:my-24 relative w-auto mx-5 px-5 lg:px-5 bg-gray-500">
+    <div
+      class="bg-cover bg-center h-32"
+      style="background-image: url('/images/impressum-1.jpg');"
+    >
+      <!-- making bg image darker -->
+      <div class="absolute inset-0 bg-black opacity-70"></div>
+      <div class="relative z-10 flex items-center h-full">
+        <label class="text-white text-xl font-large"
+          >Explore the possibilities, get in touch.</label
+        >
+        <button
+          id="downloadCV"
+          type="button"
+          class="ml-5 text-white
+					hover:text-white
+					border
+					border-white-700
+					hover:bg-white hover:text-black
+					focus:ring-4 focus:outline-none focus:ring-white-300
+					font-medium rounded-lg
+					text-sm px-5 py-2.5
+					text-center me-2 mb-2"
+        >
+          Download CV
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- /Impressum -->
+
+  <!-- Latest Posts -->
+  <div class="container py-12 bg-gray-200">
+    <PostList
+      sectionTitle="Latest Posts"
+      noOfPostsToShow={3}
+      posts={latestPosts}
+      showReadMore={true}
+    />
+  </div>
+  <!-- /Latest Posts -->
+
+  <!-- Works -->
+  <div class="container mx-auto my-16">
+    <div class="text-center mb-5">
+      <label class="text-sm">Featured Works</label>
+      <p class="text-2xl">I take pride in my work.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2">
+      <div class="h-80 object-cover hover:cursor-pointer">
+        <Image
+          src="/images/work-1.jpg"
+          alt="work-1"
+          height="100"
+          width="100"
+          class="w-full h-full"
+        />
+      </div>
+      <div class="h-80 object-cover hover:cursor-pointer">
+        <Image
+          src="/images/work-2.jpg"
+          alt="work-2"
+          height="100"
+          width="100"
+          class="w-full h-full"
+        />
+      </div>
+      <div class="h-80 object-cover hover:cursor-pointer">
+        <Image
+          src="/images/work-3.jpg"
+          alt="work-3"
+          height="100"
+          width="100"
+          class="w-full h-full"
+        />
+      </div>
+      <div class="h-80 object-cover hover:cursor-pointer">
+        <Image
+          src="/images/work-4.jpg"
+          alt="work-1"
+          height="100"
+          width="100"
+          class="w-full h-full"
+        />
+      </div>
+    </div>
+  </div>
+  <!-- /Works -->
+</Base>
+
+<script>
+  // animate text
+  let currentIndex = 0;
+  const animatedTextContainer = document.querySelector(
+    ".animated-text-container",
+  );
+  const animatedTexts =
+    animatedTextContainer?.querySelectorAll(".animated-text");
+
+  function animateText() {
+    let translate = -100 * currentIndex;
+
+    if (animatedTexts) {
+      for (const animatedText of animatedTexts) {
+        (animatedText as HTMLElement).style.transform =
+          `translateY(${translate}px)`;
+        (animatedText as HTMLElement).style.transition =
+          `transform 0.5s ease-in-out`;
+      }
+    }
+
+    // animatedTexts[currentIndex].style.transform = `translateY(${translate}px)`;
+    // Add animation duration and easing here
+
+    currentIndex = (currentIndex + 1) % animatedTexts!.length;
+    setTimeout(animateText, 2000); // Adjust animation speed
+  }
+
+  animateText();
+
+  const downloadCVButton = document.getElementById("downloadCV");
+  downloadCVButton?.addEventListener("click", () => {
+    const link = document.createElement(`a`);
+    link.href = `/resume/jjteoh-2024.pdf`;
+    // link.download = `/resume/jjteoh-2024.pdf`
+    link.target = `_blank`;
+    link.click();
+  });
+</script>

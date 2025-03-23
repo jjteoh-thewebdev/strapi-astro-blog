@@ -1,0 +1,188 @@
+---
+import type Post from "@/interfaces/post";
+import fetchApi, { type StrapiMeta } from "@/lib/strapi/strapi";
+import formatDate from "@/utils/date-utils";
+import { markdownify } from "@/utils/markdown";
+import { humanize, slugify } from "@/utils/text-utils";
+import { Markup } from "astro-remote";
+import { Image } from "astro:assets";
+import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
+import PostList from "./components/PostList.astro";
+import Share from "./components/Share.astro";
+
+// type Props = Post
+const { post } = Astro.props;
+const sPost: Post = post;
+
+const {
+  title,
+  excerpt,
+  content,
+  category,
+  Tags,
+  author,
+  banner,
+  publishedAt,
+  slug,
+} = sPost.attributes;
+const tags = Tags?.map((t) => t.name);
+const largeBanner = sPost.attributes.banner.data.attributes.formats.large;
+const smallBanner = sPost.attributes.banner.data.attributes.formats.small
+const { url } = largeBanner ?? smallBanner;
+const { alternativeText } = banner.data.attributes;
+
+const parsedContent = await markdownify(content);
+const backendBaseUrl = import.meta.env.STRAPI_URL;
+const backendToken = import.meta.env.STRAPI_API_TOKEN;
+const pageSize = 3;
+
+// logic to get similar posts
+const fecthSimilarPosts = async () => {
+  try {
+    const filters = `filters[$and][0][category][$eqi]=${category}&filters[$and][1][id][$ne]=${sPost.id}`;
+    const fields = `fields[0]=title&fields[1]=excerpt&populate[banner]=*&fields[3]=category&fields[4]=tags&fields[5]=publishedAt&fields[6]=slug`;
+    const pagination = `pagination[page]=${1}&pagination[pageSize]=${pageSize}`;
+    const sort = `sort[0]=publishedAt:desc`;
+
+    const q = `posts?${filters}&${fields}&${pagination}&${sort}`;
+
+    const response = await fetchApi<{
+      data: Post[];
+      meta: StrapiMeta;
+    }>({
+      baseUrl: backendBaseUrl,
+      authToken: backendToken,
+      endpoint: q,
+    });
+
+    if (response && response.data && response.meta) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error("Error fetching more similar posts:", error);
+  }
+
+  // default empty
+  return [];
+};
+
+const similarPosts = (await fecthSimilarPosts())?.map((p) => ({
+  id: p.id,
+  slug: p.attributes.slug,
+  image: {
+    url: p.attributes.banner.data.attributes.url,
+    alt: p.attributes.banner.data.attributes.alternativeText,
+  },
+  title: p.attributes.title,
+  excerpt: p.attributes.excerpt,
+  category: p.attributes.category,
+}));
+---
+
+<section class="section">
+  <div class="container pt-20">
+    <article class="row justify-center">
+      <div class="md:col-10 text-center">
+        <h1 set:html={markdownify(title)} class="h2 text-center" />
+        <ul class="mt-4 flex flex-wrap items-center justify-center text-text">
+          <li class="mx-3">
+            <a
+              href={`/authors/${slugify(author)}`}
+              class="flex items-center hover:text-primary font-medium"
+            >
+              <Image
+                src="/images/profile.jpg"
+                alt="profile picture"
+                height={50}
+                width={50}
+                class="mr-2 h-6 w-6 rounded-full"
+              />
+              <span>{author}</span>
+            </a>
+          </li>
+          <li class="mx-3 flex items-center flex-wrap font-medium">
+            <BiCalendarEdit className="mr-1 h-5 w-5 text-gray-600" />
+            <>{formatDate(publishedAt)}</>
+          </li>
+          <li class="mx-3 flex items-center flex-wrap">
+            <BiCategoryAlt className="mr-1 h-[18px] w-[18px] text-gray-600" />
+            <>
+              <ul>
+                <li class="inline-block">
+                  <a
+                    href={`/categories/${slugify(category)}`}
+                    class="mr-2 hover:text-primary font-medium"
+                  >
+                    {humanize(category)}
+                    <!-- {i !== post.data.categories.length - 1 && ","} -->
+                  </a>
+                </li>
+              </ul>
+            </>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-12 my-8">
+        {
+          largeBanner && (
+            <Image
+              src={url}
+              height={500}
+              width={1000}
+              alt={alternativeText ?? title}
+              class="rounded-lg"
+            />
+          )
+        }
+      </div>
+
+      <div class="md:col-10">
+        <div class="b-post-content content mb-16 text-left">
+          <Markup content={parsedContent} />
+        </div>
+        <div class="flex flex-wrap items-center justify-between">
+          <ul class="mr-4 mb-4 space-x-3">
+            {
+              tags.map((tag: string) => (
+                <li class="inline-block">
+                  <a
+                    href={`/tags/${slugify(tag)}`}
+                    class="block rounded-lg bg-theme-light px-4 py-2 font-semibold text-dark text-sm hover:text-primary transition duration-300"
+                  >
+                    {humanize(tag)}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <div>
+            Share to:
+            <Share
+              className="social-share mb-4"
+              title={title}
+              description={excerpt}
+              slug={slug}
+            />
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- similar posts -->
+{
+  similarPosts.length > 0 && (
+    <section class="section pt-8 bg-[rgba(242,242,242,0.89)]">
+      <div class="container">
+        {/* <h2 class="mb-8 text-center h3">Similar Posts</h2> */}
+        <PostList
+          posts={similarPosts.slice(0, 3)}
+          sectionTitle="Similar Posts"
+          showReadMore={false}
+        />
+      </div>
+    </section>
+  )
+}

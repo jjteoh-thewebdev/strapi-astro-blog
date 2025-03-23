@@ -1,0 +1,52 @@
+---
+import type Post from "@/interfaces/post";
+import Base from "@/layouts/Base.astro";
+import PostSingle from "@/layouts/PostSingle.astro";
+import fetchApi from "@/lib/strapi/strapi";
+
+const { slug } = Astro.params;
+
+// export async function getStaticPaths() {
+const backendBaseUrl = import.meta.env.STRAPI_URL;
+const backendToken = import.meta.env.STRAPI_API_TOKEN;
+
+// fetch from server
+const posts = await fetchApi<Post[]>({
+  baseUrl: backendBaseUrl,
+  authToken: backendToken,
+  endpoint: `posts?filters[slug][$eq]=${slug}&populate[banner]=*`,
+  wrappedByKey: `data`,
+});
+
+const post: Post | undefined = posts && posts.length > 0 ? 
+              posts[0] : undefined
+              
+if (!post)
+  return new Response(null, { status: 404 });
+
+  // return posts && posts.length > 0
+  //   ? posts.map((post) => ({
+  //       params: { slug: post.attributes.slug },
+  //       props: post,
+  //     }))
+  //   : [];
+// }
+
+// type Props = Post;
+//const post = Astro.props;
+const pageUrl = Astro.url.pathname; 
+const {title, excerpt, author, banner, publishedAt } = post.attributes
+const {url} = banner.data.attributes
+
+---
+
+<Base 
+  title={title} 
+  page_url={pageUrl}
+  description={excerpt}
+  author={author}
+  image={url}
+  published_at={publishedAt}
+ >
+  <PostSingle post={post} />
+</Base>

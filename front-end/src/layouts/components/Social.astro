@@ -1,0 +1,53 @@
+---
+import { IoLogoGithub, IoLogoLinkedin, IoMail } from "react-icons/io5";
+
+const { source, className } = Astro.props;
+
+const { linkedin, github, email } = source;
+---
+
+<ul class={className}>
+  {
+    linkedin && (
+      <li class="inline-block">
+        <a
+          aria-label="linkedin"
+          href={linkedin}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <IoLogoLinkedin />
+        </a>
+      </li>
+    )
+  }
+  {
+    github && (
+      <li class="inline-block">
+        <a
+          aria-label="github"
+          href={github}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <IoLogoGithub />
+        </a>
+      </li>
+    )
+  }
+  {
+    email && (
+      <li class="inline-block">
+        <a aria-label="email" href={`mailto:${email}`}>
+          <IoMail />
+        </a>
+      </li>
+    )
+  }
+</ul>
+
+<style>
+  .dark-social li a {
+    background: black;
+  }
+</style>

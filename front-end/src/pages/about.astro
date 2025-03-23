@@ -1,0 +1,308 @@
+---
+import Social from "@/components/Social.astro";
+import social from "@/config/social.json";
+import { Image } from "astro:assets";
+import { IoLocation, IoOpenOutline } from "react-icons/io5";
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="JJTEOH | About me">
+  <div class="bg-white mt-20"></div>
+  <div class="flex flex-col md:flex-row min-h-screen w-full">
+    <!-- left panel -->
+    <aside class="w-full md:w-3/12 py-10 px-10">
+      <div class="flex justify-center">
+        <img
+          class="w-64 md:w-100 md:h-100 rounded-full border border-1 border-gray"
+          src="/images/profile.jpg"
+          alt="Default avatar"
+        />
+      </div>
+      <h5 class="mt-2 text-center w-full">JJ Teoh</h5>
+      <a
+        class="flex flex-row items-center text-center"
+        aria-label="penang"
+        href="https://maps.app.goo.gl/VJ9UxWYCtV61spaf8"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >
+        <IoLocation className="mr-2" /> Penang, Malaysia
+      </a>
+      <Social
+        source={social}
+        className="social-icons my-4 dark-social text-center"
+      />
+
+      <div>
+        <h6>MBTI:</h6>
+        <p class="flex items-center">
+          <a href="https://www.16personalities.com/infj-personality" target="_blank">
+            INFJ(advocate)
+          </a>
+          <a href="https://www.16personalities.com/infj-personality" target="_blank">
+            <IoOpenOutline />
+          </a>
+        </p>
+      </div>
+      <div class="mt-4">
+        <h6>Language:</h6>
+        <ul>
+          <li>中文</li>
+          <li>English</li>
+          <li>Bahasa Malaysia</li>
+          <li>少し日本語を話します</li>
+        </ul>
+      </div>
+      <div class="mt-4">
+        <h6>Skills:</h6>
+        <ul>
+          <li>Node.js, NestJs</li>
+          <li>Python</li>
+          <li>Golang</li>
+          <li>ReactJs, NextJs</li>
+          <li>Linux, Ubuntu</li>
+          <li>Postgres, MySQL, MongoDB</li>
+          <li>Redis, RabbitMQ, Kafka</li>
+          <li>Docker</li>
+          <li>AWS</li>
+          <li>SRE, Jaeger, Prometheus</li>
+        </ul>
+      </div>
+      <div class="mt-4">
+        <h6>Areas of Interest:</h6>
+        <ul>
+          <li>#Software Engineering</li>
+          <li>#Project Management</li>
+          <li>#Product Management</li>
+        </ul>
+      </div>
+    </aside>
+    <!-- /left panel -->
+
+    <!-- left panel -->
+    <main class="bg-gray-800 text-white w-full md:w-9/12 py-10 px-10">
+      <div class="flex justify-between items-center w-full pb-5">
+        <p>Current Status: Open for opportunity</p>
+
+        <button
+          type="button"
+          id="downloadCV"
+          class="text-white
+						border
+						border-white-700
+						hover:bg-white hover:text-black
+						focus:ring-4 focus:outline-none focus:ring-white-300
+						font-medium rounded-lg
+						text-sm px-5 py-2.5
+						text-center me-2 mb-2"
+        >
+          Download CV
+        </button>
+      </div>
+      <div class="pt-5">
+        <h4 class="text-white">Experiences</h4>
+
+        <!-- Pingspace -->
+        <div class="mt-4">
+          <div class="flex flex-row">
+            <p>June 2020 - Present</p>
+            <div class="h-[2px] bg-white flex-grow ml-4 mt-4"></div>
+          </div>
+          <h5 class="text-white">
+            <span class="font-bold">Pingspace Robotics</span> | Penang, Malaysia
+          </h5>
+          <p>
+            Pingspace Robotics is founded in 2018 and backed by Pentamaster
+            Corp. The company enable warehosue automation via its in-house
+            developed robotics system. Apart from robotics system, the company
+            also offers customized warehouse management system to their clients.
+          </p>
+
+          <br />
+
+          <p>
+            <span class="font-semibold">Sr. Software Engineer</span> | Jan 2022 -
+            Present
+          </p>
+          <p class="italic">
+            An exciting role which chances me the opportunity to lead and excel
+            with a team of 4.
+          </p>
+          <p>Responsibilities:</p>
+          <ul class="list-disc ml-8">
+            <li>
+              Collaborate with cross functional teams to design and develop
+              software applications that meets project's requirements.
+            </li>
+            <li>
+              Coordinate team to ensure successful product feature delivery in a
+              quality manner.
+            </li>
+            <li>
+              Participate in code review, ocassionally set up pair programming
+              sessions with jurniors to ensure quality of code and promote
+              knowledge sharing within the team.
+            </li>
+            <li>
+              Lead documentation standards within the team to ensure that
+              information is of high quality and facilitates effective
+              onboarding.
+            </li>
+          </ul>
+          <p>Achievements:</p>
+          <ul class="list-disc ml-8">
+            <li>
+              Revamped legacy codebase to increase performance and greatly
+              reduced error rate from average one issue per week to nearly 99%
+              error free since then.
+            </li>
+            <li>
+              Standardize how team should collaborate, including adopting SCRUM,
+              setting up templates for PRs and issues, code review, CI/CD
+              pipeline to automate tests and offload repetitive tasks to
+              automation process to increase productivity and reduce human
+              error.
+            </li>
+          </ul>
+          <br />
+          <p>
+            <span class="font-semibold">Software Engineer</span> | June 2020 - Dec
+            2021
+          </p>
+          <p class="italic">
+            A full backend role that enable me to work on multiple projects of
+            different nature range from warehouse management to E-Commerce
+            marketplace.
+          </p>
+          <p>Responsibilities:</p>
+          <ul class="list-disc ml-8">
+            <li>Building APIs that facilitates business requirements.</li>
+            <li>
+              Work closely with frontend engineers and desingers to understand
+              how I could push the product to possible from backend perspective.
+            </li>
+            <li>Write tests to ensure quality of code.</li>
+            <li>
+              Draft SDLC related documents such like ERD, use-case diagrams,
+              flow charts and APIs documentation to facilitates collaboration
+              across project team.
+            </li>
+          </ul>
+          <p>Achievements:</p>
+          <ul class="list-disc ml-8">
+            <li>
+              Develop and maintain the company's very first version of warehouse
+              management system.
+            </li>
+            <li>
+              Participate in a E-Commerce system development project, owned
+              modules including users, products, orders. (Project scraped due to
+              business unit closed down)
+            </li>
+          </ul>
+          <div class="flex flex-wrap mt-4">
+            <Image
+              src="/images/pingspace-2.jfif"
+              alt="pingspace group photo"
+              width="400"
+              height="300"
+              class="w-1/2 object-cover"
+            />
+            <Image
+              src="/images/pingspace-2.jpg"
+              alt="pingspace group photo"
+              width="400"
+              height="300"
+              class="w-1/2 object-cover"
+            />
+          </div>
+        </div>
+        <!-- /Pingspace -->
+
+        <br />
+        <!-- Kerry Logistics -->
+        <div>
+          <div class="flex flex-row">
+            <p>Dec 2017 - Jun 2019</p>
+            <div class="h-[2px] bg-white flex-grow ml-4 mt-4"></div>
+          </div>
+          <h5 class="text-white">
+            <span class="font-bold"
+              >KLN Services Sdn. Bhd.(Kerry Logistics)</span
+            > | Penang, Malaysia
+          </h5>
+          <p>
+            KLN Services is the regional IT Application & R&D Innovation Center
+            for Kerry Logistics Network Limited (KLN), Hong Kong and its
+            associated group of companies. Kerry Logistics is a home-grown
+            international leading logistics service provider with extensive
+            operations across Greater China and Asia.
+          </p>
+
+          <br />
+
+          <p>
+            <span class="font-semibold">Jr. Software Engineer</span> | Dec 2017 -
+            Jun 2019
+          </p>
+          <p class="italic">
+            A challenging yet fulfilling full-stack developer role for a fresh
+            grad
+          </p>
+          <p>Responsibilities:</p>
+          <ul class="list-disc ml-8">
+            <li>
+              Work closely with serniors to develop multiple features for the
+              company in-house applications.
+            </li>
+            <li>
+              Communicate with system analyst and end-users to gather
+              requirements.
+            </li>
+            <li>
+              Provide technical support to operators, courier drivers and
+              operation managers to ensure business continuity.
+            </li>
+          </ul>
+          <p>Achievements:</p>
+          <ul class="list-disc ml-8">
+            <li>
+              Be in part of the parcel tracking system (KES) project and
+              deployed to several regions includes Malaysia, Indonesia, Hong
+              Kong and Thailand.
+            </li>
+            <li>
+              Customized parcel tracking system(KPharma) for pharmaceutical
+              industry in Taiwan.
+            </li>
+            <li>
+              Contribute to the launching of customized POS system for
+              pickup/dropoff stores in Malaysia.
+            </li>
+          </ul>
+          <div class="mt-4">
+            <Image
+              src="/images/kln-annual-dinner.jpg"
+              alt="kln annual dinner"
+              width="500"
+              height="300"
+              class="object-cover"
+            />
+          </div>
+        </div>
+        <!-- /Kerry Logistics -->
+      </div>
+    </main>
+    <!-- /left panel -->
+  </div>
+</Base>
+
+<script>
+  const downloadCVButton = document.getElementById("downloadCV");
+  downloadCVButton?.addEventListener("click", () => {
+    const link = document.createElement(`a`);
+    link.href = `/resume/jjteoh-2024.txt`;
+    link.target = `_blank`;
+    link.click();
+  });
+</script>
